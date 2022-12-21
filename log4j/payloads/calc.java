@@ -1,6 +1,10 @@
 public class calc {
      public static void main(String[] args) {}
      static {
-          Runtime.getRuntime().exec("calc");
+          try {
+               Runtime.getRuntime().exec("calc");
+          } catch (Exception e) {
+               e.printStackTrace();
+          }
      }
 }
