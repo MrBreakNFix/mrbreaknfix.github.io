@@ -15,12 +15,12 @@
 <style>
 
   ::-moz-selection {
-    color: #6EC282;
+    color: #3384dd;
     background: rgba(78, 138, 93, 0);
   }
 
   ::selection {
-    color: #6EC282;
+    color: #3384dd;
     background: rgba(78, 138, 93, 0);
   }
 
@@ -242,6 +242,8 @@
     cursor: pointer;
     font-size: 25px;
 
+
+
     transition: all 0.25s ease 0s;
     -webkit-transition: all 0.25s ease 0s;
 
@@ -314,7 +316,7 @@
 
   .icon-wrapper .icon {
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
-    background-color: #FFFFFF;
+    background-color: #3384dd;
     color: #000000;
 
     position: relative;
@@ -376,7 +378,7 @@
   }
 
   .info:hover {
-    color: #EBEBEB;
+    color: #3384dd;
     transform: scale(1.25);
     -webkit-transform: scale(1.25);
     letter-spacing: 1.25px;
@@ -470,9 +472,39 @@
             <br/>
             <div>
               </span><br/></div>
-            <div class="info"><span>Storage API</span><span style="display: inline" class="description">  ||  </span><br/></div>
-            <div class="info"><span>Sound API</span><span style="display: inline" class="description">  ||  </span><br/></div>
-            <div class="info"><span>Webhook API</span><span style="display: inline" class="description">  ||  </span><br/></div>
+            <div class="info" id="divItem1">
+              <span>Storage API</span>
+                <span style="display: inline" class="description"></span>
+              <br/>
+            </div>
+            <script>
+              const divItem1 = document.getElementById('divItem1');
+              divItem1.addEventListener('click', (e) => {
+                //alert("storage")
+                window.open("https://www.furry-octo-goggles.gq/api/storage","_self")
+              })
+            </script>
+
+
+            <div id="divItem2" class="info"><span>Sound API</span><span style="display: inline" class="description">
+                  </span><br/></div>
+            <script>
+              const divItem2 = document.getElementById('divItem2');
+              divItem2.addEventListener('click', (e) => {
+                //alert("sound")
+                window.open("https://www.furry-octo-goggles.gq/api/sounds/mc.wav","_self")
+
+              })
+            </script>
+            <div id="divItem3" class="info"><span>Webhook API</span><span style="display: inline" class="description">
+                 </span><br/></div>
+            <script>
+              const divItem3 = document.getElementById('divItem3');
+              divItem3.addEventListener('click', (e) => {
+                //alert("webhook")
+                window.open("https://www.furry-octo-goggles.gq/api/NotEnoughUpdates","_self")
+              })
+            </script>
           </div>
         </div>
       </div>
