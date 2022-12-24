@@ -17,5 +17,4 @@ function sendMsg() {
 	 
 	  
       request.send(JSON.stringify(params));
- alert("Your message has been sent!")
 }
