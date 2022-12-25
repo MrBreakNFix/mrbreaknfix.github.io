@@ -12,7 +12,9 @@ function sendMsg() {
       const params = {
         username: "Inbox",
         avatar_url: "",
-        content: "``" + name + "`` ```" + message + "```"
+        content: "``" + "testname" + "`` ```" + "testmessage" + "```"
+	      //        content: "``" + name + "`` ```" + message + "```"
+
       }
 	 
 	  
