@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Hex Encoder</title>
+    <title>Breaks Hex Encoder</title>
     <style>
         body {
             background-color: #f2f2f2;
@@ -61,23 +61,52 @@
 </head>
 <body>
 <div class="container">
-    <h1>Hex Encoder</h1>
+    <h1>Breaks Hex Encoder</h1>
     <label for="input">Input:</label>
-    <textarea id="input" placeholder="Enter text to encode..."></textarea>
-    <button onclick="encode()">Encode to Hex</button>
+    <textarea id="input" placeholder="Enter text"></textarea>
     <label for="output">Output:</label>
     <textarea id="output" readonly></textarea>
+    <button onclick="encode()">Copy</button>
 </div>
 
 <script>
     function encode() {
         var input = document.getElementById("input").value;
+        var output = document.getElementById("output");
         var hex = "";
-        for (var i = 0; i < input.length; i++) {
-            hex += input.charCodeAt(i).toString(16);
+        if (isHex(input)) {
+            hex = input.replace(/[^0-9a-fA-F]/g, "");
+            var text = "";
+            for (var i = 0; i < hex.length; i += 2) {
+                text += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+            }
+            output.value = text;
+        } else {
+            for (var i = 0; i < input.length; i++) {
+                hex += input.charCodeAt(i).toString(16);
+            }
+            output.value = hex;
         }
-        document.getElementById("output").value = hex;
     }
+
+    function isHex(str) {
+        // Check if string is a valid hexadecimal strin
+        return /^[0-9a-fA-F]+$/.test(str);
+    }
+
+    var input = document.getElementById("input");
+    var output = document.getElementById("output");
+    input.addEventListener("input", function() {
+        encode();
+    });
+
+    var button = document.getElementsByTagName("button")[0];
+
+    var button = document.getElementsByTagName("button")[0];
+    button.addEventListener("click", function() {
+        output.select();
+        document.execCommand("copy");
+    });
 </script>
 </body>
 </html>
