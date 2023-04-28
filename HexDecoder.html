@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Breaks Hex Decoder</title>
+    <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            font-size: 18px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: none;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+        button {
+            display: block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0062cc;
+        }
+        #output {
+            font-family: monospace;
+            font-size: 18px;
+            background-color: #f2f2f2;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Breaks Hex Decoder</h1>
+    <label for="input">Input:</label>
+    <textarea id="input" placeholder="Enter hexadecimal to decode..."></textarea>
+    <label for="output">Output:</label>
+    <textarea id="output" readonly></textarea>
+    <button onclick="decode()">Copy</button>
+</div>
+
+<script>
+    function decode() {
+        var input = document.getElementById("input").value;
+        var output = document.getElementById("output");
+        var text = "";
+        if (isHex(input)) {
+            var hex = input.replace(/[^0-9a-fA-F]/g, "");
+            for (var i = 0; i < hex.length; i += 2) {
+                text += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+            }
+            output.value = text;
+        } else {
+            output.value = "Invalid input! Please enter a valid hexadecimal string.";
+        }
+    }
+
+    function isHex(str) {
+        return /^[0-9a-fA-F]+$/.test(str);
+    }
+
+    var input = document.getElementById("input");
+    var output = document.getElementById("output");
+    input.addEventListener("input", function() {
+        decode();
+    });
+
+    var button = document.getElementsByTagName("button")[0];
+    button.addEventListener("click", function() {
+        output.select();
+        document.execCommand("copy");
+    });
+</script>
+</body>
+</html>
