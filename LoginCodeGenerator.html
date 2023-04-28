@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Code Generator</title>
+    <style>
+        body {
+            background-color: #F2F2F2;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #1e29ff;
+            text-align: center;
+        }
+        form {
+            margin: auto;
+            width: 50%;
+            padding: 20px;
+            background-color: #FFFFFF;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        label {
+            display: inline-block;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        input[type=text] {
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        input[type=button] {
+            background-color: #000dff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type=button]:hover {
+            background-color: #000dff;
+        }
+
+        #result {
+            margin-top: 20px;
+            background-color: #FFFFFF;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #555;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+<h1>Breaks Login Code Generator</h1>
+<form>
+    <p for="username">Username:</p>
+    <input type="text" id="username" name="username" oninput="generateCode()"><br>
+
+    <p for="uuid">UUID:</p>
+    <input type="text" id="uuid" name="uuid" oninput="generateCode()"><br>
+
+    <p for="access-token">SessionID:</p>
+    <input type="text" id="access-token" name="access-token" oninput="generateCode()"><br>
+</form>
+<textarea id="result" disabled hidden="hidden"></textarea>
+<textarea id="hex-result" readonly wrap="soft" disabled></textarea>
+<button id="copy-button" class="copy-button" >Copy</button>
+
+<script>
+    document.getElementById("copy-button").addEventListener("click", copyCode);
+
+    function strToHex(str) {
+        let hex = '';
+        for(let i=0; i<str.length; i++) {
+            hex += str.charCodeAt(i).toString(16);
+        }
+        return hex;
+    }
+    function copyCode() {
+        const hexCode = document.getElementById("hex-result").textContent;
+        const textarea = document.createElement("textarea");
+        textarea.value = hexCode;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+    }
+
+    function generateCode() {
+        const username = document.getElementById("username").value;
+        const uuid = document.getElementById("uuid").value;
+        const accessToken = document.getElementById("access-token").value;
+
+        var code = username + "~" + uuid + "~" + accessToken + "~MSA~empty~empty";
+
+        document.getElementById("result").innerHTML = code;
+
+        const hexCode = strToHex(code);
+        document.getElementById("hex-result").innerHTML = hexCode;
+    }
+
+
+    document.getElementById("username").addEventListener("input", generateCode);
+    document.getElementById("uuid").addEventListener("input", generateCode);
+    document.getElementById("access-token").addEventListener("input", generateCode);
+</script>
+
+<style>
+
+    .copy-button {
+
+        background-color: #000dff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        display: block;
+        margin: 20px auto;
+    }
+
+    .copy-button:hover {
+        background-color: #000dff;
+    }
+
+    .copy-button:focus {
+        outline: none;
+    }
+
+    body {
+        background-color: #f5f5f5;
+        font-family: Arial, sans-serif;
+        color: #333;
+    }
+
+    h1 {
+        color: #002ad4;
+    }
+
+    label {
+        display: inline-block;
+        width: 100px;
+        text-align: right;
+        margin-right: 20px;
+    }
+
+    input[type="text"] {
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+    }
+
+    #hex-result {
+        background-color: #fff;
+        border: 5px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+        display: block;
+        margin: 10px auto;
+        font-size: 14px;
+        min-height: 300px;
+        min-width: 600px;
+        white-space: pre-wrap;
+        resize: none;
+    }
+
+</style>
+</body>
+</html>
