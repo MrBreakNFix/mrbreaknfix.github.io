@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Webhook Sender</title>
+        <style>
+            body {
+                background-color: rgb(218, 230, 242);
+            }
+
+            h1 {
+                font-family: fantasy;
+            }
+
+            #webhook_data {
+                font-family: monospace;
+                font-size: 14px;
+            }
+
+            #send_button {
+                background-color: azure;
+                border-width: 0.5px;
+                font-family: monospace;
+            }
+
+            #send_button:active {
+                background-color: rgb(113, 176, 176);
+            }
+
+            #send_button:hover {
+                border-width: 2px;
+            }
+
+            #url_box_child {
+                width: 500px;
+            }
+
+            #message_box_child {
+                vertical-align: middle;
+            }
+
+            #username_box_child {
+                width: 200px;
+            }
+
+            #thread_name_box_child {
+                width: 185px;
+            }
+
+            #avatar_url_box_child {
+                width: 175px;
+            }
+
+            .divs {
+                padding-bottom: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Webhook Sender</h1>
+        <hr />
+        <form id="webhook_data">
+
+            <fieldset>
+                <legend>Message Data</legend>
+
+                <label id="message_box">
+                    Message:
+                    <textarea id="message_box_child"></textarea>
+                </label>
+
+                <br />
+
+                <div class="divs"></div>
+                <label id="tts">
+                    TTS:
+                    <select id="tts_child" name="TTS">
+                        <option value="false">False</option>
+                        <option value="true">True</option>
+                    </select>
+                </label>
+
+            </fieldset>
+
+            <br />
+            
+            <fieldset>
+                <legend>Misc</legend>
+
+                <label id="url_box">
+                    Webhook URL:
+                    <input id="url_box_child" type="url" />
+                </label>
+
+                <br />
+
+                <div class="divs"></div>
+                <label id="avatar_url_box">
+                    Avatar URL:
+                    <input id="avatar_url_box_child" type="url" placeholder="Leave blank for no avatar" />
+                </label>
+
+                <br />
+
+                <div class="divs"></div>
+                <label id="username_box">
+                    Username:
+                    <input id="username_box_child" type="text" placeholder="Leave blank for default username" />
+                </label>
+
+                <br />
+
+                <div class="divs"></div>
+                <label id="thread_name_box">
+                    Thread Name:
+                    <input id="thread_name_box_child" type="text" placeholder="Leave blank for default thread" />
+                </label>
+
+                <br />
+
+                <div class="divs"></div>
+                <label id="delete_option">
+                    Delete:
+                    <select id="delete_option_child" name="Delete">
+                        <option value="false">False</option>
+                        <option value="true">True</option>
+                    </select>
+                </label>
+            </fieldset>
+        </form>
+        <hr />
+        <button id="send_button">Send</button>
+
+        <script>
+            document.getElementById("send_button").addEventListener("click", (ev) => {
+                const message = document.getElementById("message_box_child").value;
+                const username = document.getElementById("username_box_child").value;
+                const tts = document.getElementById("tts_child").value == "true" ? true : false;
+                const url = document.getElementById("url_box_child").value;
+                const avatarUrl = document.getElementById("avatar_url_box_child").value;
+                const threadName = document.getElementById("thread_name_box_child").value;
+                const shouldDelete = document.getElementById("delete_option_child").value == "true" ? true : false;
+
+                fetch(url, {
+                    method: shouldDelete ? "DELETE" : "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+                    },
+                    body: JSON.stringify({
+                        "content": message,
+                        "tts": tts,
+                        "username": username,
+                        "avatar_url": avatarUrl,
+                        "thread_name": threadName,
+                        "embeds": null,
+                        "attachments": []
+                    }).replace("\"username\":\"\",", "")
+                });
+            });
+        </script>
+    </body>
+</html>
