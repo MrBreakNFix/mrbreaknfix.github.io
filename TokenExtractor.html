@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Breaks Token Extractor</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        textarea {
+            width: 100%;
+            resize: none;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            padding: 10px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+        #outputToken {
+            margin-top: 10px;
+        }
+        #outputToken:read-only {
+            background-color: #f2f2f2;
+        }
+        button {
+            display: block;
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0062cc;
+        }
+    </style>
+</head>
+<body>
+<h1>Token Extractor</h1>
+<form>
+    <label for="inputHex">Input Code:</label>
+    <textarea id="inputHex" name="inputHex" rows="10" cols="50" oninput="extractToken()"></textarea>
+    <label for="outputToken">Output Token:</label>
+    <textarea id="outputToken" name="outputToken" rows="10" cols="50" readonly></textarea>
+    <button id="copyButton" type="button" onclick="copyToClipboard()">Copy</button>
+</form>
+<script>
+    function extractToken() {
+        let inputHex = document.getElementById("inputHex").value;
+        let text = hexToString(inputHex);
+        let token = extractTokenFromText(text);
+        document.getElementById("outputToken").value = token;
+    }
+
+    function hexToString(hex) {
+        let str = "";
+        for (let i = 0; i < hex.length; i += 2) {
+            let code = parseInt(hex.substr(i, 2), 16);
+            str += String.fromCharCode(code);
+        }
+        return str;
+    }
+
+    function extractTokenFromText(text) {
+        let tokens = text.split("~");
+        if (tokens.length >= 3) {
+            return tokens[2];
+        } else {
+            return "";
+        }
+    }
+
+    function copyToClipboard() {
+        let outputToken = document.getElementById("outputToken");
+        outputToken.select();
+        document.execCommand("copy");
+    }
+</script>
+</body>
+</html>
