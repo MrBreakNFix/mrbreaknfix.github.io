@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="simulatorCanvas" width="400" height="400"></canvas>
+
+  <script>
+    // Get the canvas element and its 2D drawing context
+    const canvas = document.getElementById("simulatorCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // Define the particle properties
+    const particles = [];
+    const particleCount = 5;
+
+    class Particle {
+      constructor(x, y, radius, color, mass) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+        this.color = color;
+        this.mass = mass;
+        this.velocity = {
+          x: (Math.random() - 0.5) * 2, // Random initial velocity
+          y: (Math.random() - 0.5) * 2  // Random initial velocity
+        };
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      update() {
+        this.draw();
+
+        // Apply gravitational forces from other particles
+        for (let i = 0; i < particles.length; i++) {
+          if (this === particles[i]) continue; // Skip self
+          const dx = particles[i].x - this.x;
+          const dy = particles[i].y - this.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          const force = (G * this.mass * particles[i].mass) / (distance * distance);
+
+          const accelerationX = force * (dx / distance);
+          const accelerationY = force * (dy / distance);
+
+          this.velocity.x += accelerationX;
+          this.velocity.y += accelerationY;
+        }
+
+        // Update particle position based on velocity
+        this.x += this.velocity.x;
+        this.y += this.velocity.y;
+
+        // Apply friction to slow down particles over time
+        this.velocity.x *= friction;
+        this.velocity.y *= friction;
+
+        // Keep particles within the canvas bounds
+        if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
+          this.velocity.x = -this.velocity.x;
+        }
+        if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
+          this.velocity.y = -this.velocity.y;
+        }
+      }
+    }
+
+    // Constants for simulation
+    const G = 0.02;     // Gravitational constant
+    const friction = 0.99; // Friction coefficient
+
+    // Generate random particles
+    for (let i = 0; i < particleCount; i++) {
+      const radius = Math.random() * 20 + 5; // Random radius between 5 and 25
+      const x = Math.random() * (canvas.width - radius * 2) + radius;
+      const y = Math.random() * (canvas.height - radius * 2) + radius;
+      const color = `hsl(${Math.random() * 360}, 50%, 50%)`;
+      const mass = radius;
+
+      particles.push(new Particle(x, y, radius, color, mass));
+    }
+
+    // Function to update the simulation state
+    function update() {
+      // Clear the canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Update and draw particles
+      particles.forEach(particle => {
+        particle.update();
+      });
+
+      // Request the next animation frame
+      requestAnimationFrame(update);
+    }
+
+    // Start the simulation loop
+    update();
+  </script>
+</body>
+</html>
