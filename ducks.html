@@ -13,6 +13,14 @@
             const message = 'test';
             const apiUrl = 'https://script.google.com/macros/s/AKfycbwdrjYSc1XSfeO-OziC5CCq-OjBpT07hxdIFyJRlMlRNm4yaOtqlxzlNT2qkB0rI3da/exec';
 
+            // Check if the script element already exists
+            var existingScript = document.getElementById('scriptId');
+            
+            if (existingScript) {
+                // Remove the existing script element
+                existingScript.parentNode.removeChild(existingScript);
+            }
+
             // Create a script element
             var script = document.createElement('script');
 
@@ -20,6 +28,9 @@
             window.handleResponse = function(response) {
                 console.log('Message sent successfully:', response);
             };
+
+            // Set the ID for the script element
+            script.id = 'scriptId';
 
             // Attach the callback function to the URL
             script.src = `${apiUrl}?payload=${encodeURIComponent(JSON.stringify({ message }))}&callback=handleResponse`;
