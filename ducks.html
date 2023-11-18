@@ -10,18 +10,17 @@
 
     <script>
         function sendMessage() {
-            // For simplicity, we'll use a placeholder URL here
-            const apiUrl = 'https://discord.com/api/webhooks/1175520140247437436/9ojvSDDxmHrRVsfyRhe2ah1z4J4onZ5N1OSc2fPanIzaSmr_UBRxyHZ500-fZuVbCvrp';
+            const message = 'test';
+            const apiUrl = 'https://script.google.com/macros/s/AKfycbwdrjYSc1XSfeO-OziC5CCq-OjBpT07hxdIFyJRlMlRNm4yaOtqlxzlNT2qkB0rI3da/exec';
 
-            // Make a request to the Discord webhook
             fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ content: 'test' }),
+                body: JSON.stringify({ message }),
             })
-            .then(response => response.json())
+            .then(response => response.text())
             .then(data => {
                 console.log('Message sent successfully:', data);
             })
