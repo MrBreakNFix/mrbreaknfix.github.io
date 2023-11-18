@@ -9,23 +9,24 @@
     <button onclick="sendMessage()">Send Test Message</button>
 
     <script>
-        function sendMessage() {
+        async function sendMessage() {
             const message = 'test';
             const apiUrl = 'https://script.google.com/macros/s/AKfycbwdrjYSc1XSfeO-OziC5CCq-OjBpT07hxdIFyJRlMlRNm4yaOtqlxzlNT2qkB0rI3da/exec';
 
-            // Create a script element
-            var script = document.createElement('script');
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message }),
+                });
 
-            // Define the callback function
-            window.handleResponse = function(response) {
-                console.log('Message sent successfully:', response);
-            };
-
-            // Attach the callback function to the URL
-            script.src = `${apiUrl}?payload=${encodeURIComponent(JSON.stringify({ message }))}&callback=handleResponse`;
-
-            // Append the script element to the document
-            document.body.appendChild(script);
+                const data = await response.json();
+                console.log('Message sent successfully:', data);
+            } catch (error) {
+                console.error('Error sending message:', error);
+            }
         }
     </script>
 </body>
