@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comments App</title>
+</head>
+<body>
+
+  <h1>Comments</h1>
+  <form id="commentForm">
+    <label for="comment">Comment:</label>
+    <input type="text" id="comment" name="comment" required>
+    <br>
+    <label for="commenterName">Your Name:</label>
+    <input type="text" id="commenterName" name="commenterName" required>
+    <br>
+    <button type="button" onclick="addComment()">Add Comment</button>
+  </form>
+
+  <div id="commentsContainer"></div>
+
+  <script>
+    function addCommentCallback(response) {
+      console.log(response);
+      getComments();
+    }
+
+    function addComment() {
+      var comment = document.getElementById('comment').value;
+      var commenterName = document.getElementById('commenterName').value;
+
+      var script = document.createElement('script');
+      script.src = 'https://script.google.com/macros/s/AKfycbx1ysZt6_Whe66G6zaCMFvYpW4QlnkDFqgo9jzk6IMZFKNlGt3FbLqyy2vAIwRlpeE1/exec?callback=addCommentCallback&action=addComment&comment=' + encodeURIComponent(comment) + '&commenterName=' + encodeURIComponent(commenterName);
+      document.body.appendChild(script);
+    }
+
+    function getComments() {
+      var script = document.createElement('script');
+      script.src = 'https://script.google.com/macros/s/AKfycbx1ysZt6_Whe66G6zaCMFvYpW4QlnkDFqgo9jzk6IMZFKNlGt3FbLqyy2vAIwRlpeE1/exec?callback=displayComments&action=getComments';
+      document.body.appendChild(script);
+    }
+
+    function displayComments(response) {
+      if (response && response.status === 'success' && Array.isArray(response.comments)) {
+        var commentsContainer = document.getElementById('commentsContainer');
+        commentsContainer.innerHTML = '<h2>Comments:</h2>';
+        response.comments.forEach(function(comment) {
+          var formattedTimestamp = new Date(comment.timestamp).toLocaleString();
+
+          commentsContainer.innerHTML += '<p><strong>' + comment.commenterName + ':</strong> ' + comment.comment + ' (' + formattedTimestamp + ')</p>';
+        });
+      } else {
+        console.error('Invalid response format:', response);
+      }
+    }
+
+    getComments();
+  </script>
+</body>
+</html>
